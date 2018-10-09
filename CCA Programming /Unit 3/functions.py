@@ -23,3 +23,5 @@ def max_of_three(x, y, z):
         return y
     elif z > x and z > y:
         return z
+    else:
+        return "You might have entered the same number twice"
