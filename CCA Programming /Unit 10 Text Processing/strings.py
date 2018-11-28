@@ -17,7 +17,7 @@ def replace_char1(a_str, idx, char):
     string1 = a_str[:idx]
     string2 = a_str[idx + 1:]
     final = string1 + char + string2
-    return final
+    print final
 
 def replace_char2(a_str, idx, char):
     """
@@ -26,4 +26,11 @@ def replace_char2(a_str, idx, char):
     This implementation should use string/list conversions to accomplish this
     task.
     """
-    pass
+    l = list(a_str)
+    l[idx] = char
+    final = "".join(l)
+    print final
+
+
+## replace_char1("happy", 1, "o")
+replace_char2("happy", 1, "o")
