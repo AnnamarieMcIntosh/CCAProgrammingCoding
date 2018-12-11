@@ -1,6 +1,6 @@
 '''
 Hangman - Final Lab
-<Your name(s) go here!!!!>
+Annamarie McIntosh
 
 This module implements the game, hangman.
 '''
@@ -105,8 +105,11 @@ def display_board(missed, word_status):
     Missed letters: i e u 
     o _ _ _ a _ 
     '''
-    #[YOUR CODE HERE]
-    pass
+    print(HANGMAN_PICS[len(missed)])
+    print("Missed letters: %s" % " ".join(missed))
+    print(" ".join(word_status))
+    
+    
 
 
 
@@ -118,8 +121,17 @@ def get_guess(already_guessed):
     The user should be told if they failed to enter a single alphabetic
     character or if the letter has already been guessed. 
     '''
-    #[YOUR CODE HERE] Be sure the letter returned is lower case!
-    pass
+    while True:
+        guess = input("Enter a leter: ")
+        if guess.isdigit() == True:
+            print("This is not a letter. Please type a LETTER.")
+        elif guess in already_guessed:
+            print("This letter has already been guessed. Please choose a different letter.")
+
+        elif len(guess) > 1:
+            print("Please type only ONE letter.")
+        else:
+            return guess
 
 
 def hangman(word):
@@ -129,18 +141,19 @@ def hangman(word):
     '''
     print('H A N G M A N')
     missed = []
-    corect = []
+    correct = []
     word_status = ["_"]*len(word)
 
     game_over = False
-    max_wrong = len(HANGMANPICS) - 1
+    max_wrong = len(HANGMAN_PICS) - 1
 
     while not game_over:
         display_board(missed, word_status)
         print()
         # get the next guess
         guess = get_guess(missed + correct)
-        # [YOUR CODE HERE] 
+        if word == guess:
+            
         # check if the guessed letter is in the mystery word
         #    if so, did the user guess all the letters?
         #       if so, print the final board and tell the user that they guessed correctly.
@@ -148,21 +161,20 @@ def hangman(word):
         #    if so, print the final board and tell the user that they ran out of guesses.
 
     # dont forget to return True or False
-                                
-            
+
+
 def main():
     '''
     Reads an external file to initialize the list of hangman words to choose from.
     Repeatedly selects a word from the list and initiates a game of hangman until the
     user says that he or she wants to stop.
     '''
-    wordfile = # [YOUR CODE HERE] open "wordlist.txt file for reading
-    word_list = # [YOUR CODE HERE] initialize a list of possible words by reading from wordfile
+    wordfile = open("wordlist.txt", "r")
+    word_list = wordfile.readlines()
     
     repeat = True
     while repeat:
-        word = # [YOUR CODE HERE] randomly select a word from word_list
-               # Make sure your word doesn't have a "\n" at the end!
+        word = word = random.choice(word_list)[:-1]
         if hangman(word):
             print("You win!")
         else:
