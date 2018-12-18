@@ -106,11 +106,9 @@ def display_board(missed, word_status):
     o _ _ _ a _ 
     '''
     print(HANGMAN_PICS[len(missed)])
+    print()
     print("Missed letters: %s" % " ".join(missed))
     print(" ".join(word_status))
-    
-    
-
 
 
 def get_guess(already_guessed):
@@ -122,8 +120,8 @@ def get_guess(already_guessed):
     character or if the letter has already been guessed. 
     '''
     while True:
-        guess = input("Enter a leter: ")
-        if guess.isdigit() == True:
+        guess = input("Enter a leter: ").lower()
+        if not guess.isalpha():
             print("This is not a letter. Please type a LETTER.")
         elif guess in already_guessed:
             print("This letter has already been guessed. Please choose a different letter.")
@@ -143,16 +141,35 @@ def hangman(word):
     missed = []
     correct = []
     word_status = ["_"]*len(word)
+    
 
     game_over = False
     max_wrong = len(HANGMAN_PICS) - 1
+    guess_number = 0
 
     while not game_over:
         display_board(missed, word_status)
         print()
         # get the next guess
         guess = get_guess(missed + correct)
-        if word == guess:
+        if guess in word:
+            correct.append(guess)
+            index = 0
+            for letter in word:
+                if letter == guess:
+                    word_status[index] = guess
+                index += 1
+            if "_" not in word_status:
+                display_board(missed, word_status)
+                return True
+        else:
+            missed.append(guess)
+            guess_number += 1
+            if guess_number >= max_wrong:
+                display_board(missed, word_status)
+                print("You are out of guesses. The word was '%s'." % word)
+                return False
+                
             
         # check if the guessed letter is in the mystery word
         #    if so, did the user guess all the letters?
@@ -174,7 +191,7 @@ def main():
     
     repeat = True
     while repeat:
-        word = word = random.choice(word_list)[:-1]
+        word = random.choice(word_list)[:-1]
         if hangman(word):
             print("You win!")
         else:
